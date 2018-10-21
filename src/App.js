@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import SearchForBeer from './components/SearchForBeer';
 
 class App extends Component {
   state = {
@@ -43,6 +44,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Navbar />
+          <SearchForBeer />
           {/* <h1>{error ? `Error: ${error.message}` : (
           <ul>
             {items.map(item => (
