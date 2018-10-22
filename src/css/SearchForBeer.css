@@ -23,6 +23,7 @@
     background-color: #14bdac;
     border-top-right-radius: .25rem;
     border-bottom-right-radius: .25rem;
+    cursor: pointer;
 }
 
 @media (min-width: 768px) {

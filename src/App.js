@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import SearchForBeer from './components/SearchForBeer';
+import Beers from './components/Beers';
 
 class App extends Component {
   state = {
@@ -12,7 +13,7 @@ class App extends Component {
 
   componentDidMount() {
     let items = [];
-    fetch('https://api.punkapi.com/v2/beers?page=1&per_page=20')
+    fetch('https://api.punkapi.com/v2/beers?page=1&per_page=24')
       .then(res => {
         if (res.ok) {
           this.setState({ isLoaded: true });
@@ -39,21 +40,13 @@ class App extends Component {
   }
 
   render() {
-    // const { items, isLoaded, error } = this.state;
+    const { items } = this.state;
     return (
       <BrowserRouter>
         <div className="App">
           <Navbar />
           <SearchForBeer />
-          {/* <h1>{error ? `Error: ${error.message}` : (
-          <ul>
-            {items.map(item => (
-              <li key={item.id}>
-                {item.name} {item.tagline}
-              </li>
-            ))}
-          </ul>
-        )}</h1> */}
+          <Beers beers={items} />
         </div>
       </BrowserRouter>
     );
