@@ -25,6 +25,10 @@
     font-weight: 700;
 }
 
+.menu-list__link.active {
+    color: #ff0;
+}
+
 @media (orientation: landscape) {
     .App__header {
         display: flex;

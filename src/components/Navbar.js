@@ -9,10 +9,10 @@ const Navbar = () => {
       <nav className="App__nav">
         <ul className="menu-list">
           <li className="menu-list__item">
-            <NavLink className="menu-list__link" to="/">Home</NavLink>
+            <NavLink className="menu-list__link" exact to="/">Home</NavLink>
           </li>
           <li className="menu-list__item">
-            <NavLink className="menu-list__link" to="/">Favourites</NavLink>
+            <NavLink className="menu-list__link" to="/favourites">Favourites</NavLink>
           </li>
         </ul>
       </nav>
