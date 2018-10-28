@@ -7,13 +7,13 @@ import Favourites from './components/Favourites';
 class App extends Component {
   state = {
     items: [],
-    favourites: [],
+    favourites: localStorage.getItem('Favourites') ? JSON.parse(localStorage.getItem('Favourites')) : [],
     isLoaded: false,
     error: null
   }
 
-  toggleFavourite = (e, id) => {
-    const beer = this.state.items.filter(item => item.id === id)[0];
+  toggleFavourite = async (e, id) => {
+    const beer = this.state.items.find(item => item.id === id);
     let favourites;
     if (!beer.isFavourite) {
       e.target.className = 'fas fa-star';
@@ -25,12 +25,51 @@ class App extends Component {
       favourites = this.state.favourites.filter(favourite => favourite.id !== id);
     }
     beer.isFavourite = !beer.isFavourite;
-    this.setState({ favourites });
+    await this.setState({ favourites });
+    localStorage.setItem('Favourites', JSON.stringify(this.state.favourites));
+  }
+
+  checkIfFavourite = (id) => {
+    const isFavourite = this.state.favourites.find(favourite => favourite.id === id);
+    if (isFavourite) return true;
+    return false;
+  }
+
+  searchForBeer = (beer) => {
+    const items = [];
+    fetch(`https://api.punkapi.com/v2/beers?beer_name=${beer}&page=1&per_page=80`)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error(`The connection ended with status ${res.status}${res.statusText ? ': ' + res.statusText : ''}`);
+        }
+      })
+      .then(json => {
+        if (!json.length) return alert('We\'re sorry, we could not find such a beer :(');
+        json.forEach(item => {
+          const beer = {
+            id: item.id,
+            name: item.name,
+            tagline: item.tagline,
+            firstBrewed: item.first_brewed,
+            desc: item.description,
+            imageURL: item.image_url,
+            isFavourite: this.checkIfFavourite(item.id)
+          };
+          items.push(beer);
+        });
+        this.setState({ items });
+      })
+      .catch(error => {
+        this.setState({ error });
+        alert(error);
+      });
   }
 
   componentDidMount() {
     const items = [];
-    fetch('https://api.punkapi.com/v2/beers?page=1&per_page=24')
+    fetch('https://api.punkapi.com/v2/beers?page=1&per_page=80')
       .then(res => {
         if (res.ok) {
           this.setState({ isLoaded: true });
@@ -48,7 +87,7 @@ class App extends Component {
             firstBrewed: item.first_brewed,
             desc: item.description,
             imageURL: item.image_url,
-            isFavourite: false
+            isFavourite: this.checkIfFavourite(item.id)
           };
           items.push(beer);
         });
@@ -67,7 +106,7 @@ class App extends Component {
         <div className="App">
           <Navbar />
           <Switch>
-            <Route exact path="/" render={() => <Beers beers={items} toggleFavourite={this.toggleFavourite} />} />
+            <Route exact path="/" render={() => <Beers beers={items} toggleFavourite={this.toggleFavourite} searchForBeer={this.searchForBeer} />} />
             <Route path="/favourites" render={() => <Favourites beers={favourites} toggleFavourite={this.toggleFavourite} />} />
           </Switch>
         </div>

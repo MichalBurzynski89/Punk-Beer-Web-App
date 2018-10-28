@@ -8,10 +8,12 @@ class SearchForBeer extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    document.getElementById('searchInput').focus();
+    if (!this.state.content) return;
+    this.props.searchForBeer(this.state.content);
     this.setState({
       content: ''
     });
-    document.getElementById('searchInput').focus();
   }
 
   handleChange = (e) => {

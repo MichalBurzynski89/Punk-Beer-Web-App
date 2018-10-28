@@ -3,7 +3,7 @@ import SearchForBeer from './SearchForBeer';
 import RenderBeerList from './RenderBeerList';
 import '../css/Beers.css';
 
-const Beers = ({ beers, toggleFavourite }) => {
+const Beers = ({ beers, toggleFavourite, searchForBeer }) => {
   const beerList = beers.length ? (
     <RenderBeerList beers={beers} toggleFavourite={toggleFavourite} />
   ) : (
@@ -12,7 +12,7 @@ const Beers = ({ beers, toggleFavourite }) => {
 
   return (
     <main className="App__main">
-      <SearchForBeer />
+      <SearchForBeer searchForBeer={searchForBeer} />
       <div className="container">
         {beerList}
       </div>
