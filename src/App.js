@@ -102,7 +102,7 @@ class App extends Component {
   render() {
     const { items, favourites } = this.state;
     return (
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className="App">
           <Navbar />
           <Switch>
